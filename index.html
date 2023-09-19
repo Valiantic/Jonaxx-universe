@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steve Dev's JONAXX Universe</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #000;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+     
+    }
+    h1{
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      z-index: 10;
+      font-size: 3vw;
+      margin: 0;
+      padding: 0;
+    }
+    h4{
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5vw;
+      margin: 0;
+      padding: 0;
+    }
+    .title{
+      position: absolute;
+      height: auto;
+      /*border: red solid 2px;*/
+      top: 1%;
+      margin: 0;
+      padding: 0;
+    
+    }
+    section{
+      width: 90vw;
+      /*border: red solid 2px;*/
+      height: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid #fff;
+      cursor: pointer;
+      z-index: 0;
+      margin-top: 10%;
+      /*border: red solid 2px;*/
+      /*width: 90vw;*/
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+      width: 25vw;
+
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+ 
+  
+  
+  <div class="title">
+    <h1>J O N A X X</h1>
+    <h4>Universe</h4>
+  </div>
+
+  <section>
+    <canvas id="starCanvas" width="800" height="600">
+    </canvas>
+  </section>
+
+  <div class="modal" id="starModal">
+    
+  
+
+
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="starName"></h2>
+    <p id="starDescription"></p>
+    <p id="starQuote"></p>
+  </div>
+  <script> const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+    const stars = [];
+    const numSmallStars = 40;
+    const numBigStars = 13;
+    const totalStars = numSmallStars + numBigStars;
+    const quotes = [
+    "If you choose the right path, you are saved. if you choose the wrong path, you learn from your mistakes. -Tripped: Lilienne Ylena",
+    "When the times come, i wish to go first. -Love in the dark: Hades Vesarius Riego",
+    "I can't lose her. Losing her means losing myself. -Island of fire: Radleight Vesarius Riego",
+    "I'll marry you when the time is right. I'll marry you when i am right for you. -Sunburned heart: Jaxon Archibald Riego",
+    "I love you, My Mercadejas. -Whispers of the wind: Annaliese Tanja Lopez",
+    "I'm heartless because my heart isn't with me. It's with you, Rozen. -Heartless: Coreen Samantha Aquino",
+    "Will you marry me? Look at me if it is a yes. -Why do you hate me?: Jayden Corpuz",
+    "I am only successful because I have you. -Tripped: Riguel Jameson Alleje",
+    "Give me one lifetime to prove you that I deserve your love. -Every beast needs a beauty: Rage Del Fierro",
+    "The chase is over. I've locked you inside my heart. The key is lost forever baby. -Chasing hearts: Chase Martin Castillo",
+    "I will always be faithful, I will always love you no matter what. -Training to love: Troy Salazar",
+    "Always late, but worth the wait. -Invisible man: Brent Damien Cruz",
+    "You made me grow, you made me fall.. And so whipped. -Whipped: Knoxx Gideon Montefalco ",
+    "I made her fall inlove for me, that she'll never leave. -Mapapansin kaya?: Wade Rivas",
+    "My love is greater than my pride. -No perfect prince: Benjamin Jimenez",
+    "When I like someone, I don't wait for things to fall into place. -What lies beneath the sand: Antonius Lienzo Mercadejas",
+    "You painted my life with so many colors. You made me realize that black, no matter how painful and dark, is a color, too. -What lies beneath the sand: Zarrick Amiel Mercadejas",
+    "I've only ever loved you, Klare. I don't think I'm capable of loving someone else. -Until trilogy: Elijah Montefalco",
+    "Thank you. For saving me. I'm yours forever, Amber. I love you. -Sunburned heart: Jaxon Archibald Riego",
+    "I'm done with work. I love you. -Blown by the wind: -Vincentius Theron Hidalgo",
+    "Don't worry. I think I'm more in love with you, Leil. -Sands of time: Raoul Vesarius Riego",
+    "It's all yours. I'm all yours. My fire is all yours. -Scorching love: Percival Riego",
+    "You want my chase? I'll chase you endlessly until you gave in. -Heartless: Rozen Elizalde",
+    "Because the first time I saw her in the picture, I almost lost my senses. And the first time I saw her in person, I couldn't sleep at night. -Whipped: Knoxx Montefalco",
+    "I made her fall in love with me, that she'll never leave. -Mapapansin kaya?: Wade Rivas",
+    "I like you. I want you. Bad... Really bad. But I can't have you. I shouldn't. That's why. -Every beast needs a beauty: Rage Del Fierro",
+    "The chase is over. I've locked you inside my heart. The key is lost forever baby. -Chasing hearts: Chase Castillo",
+    "Damn! Baby, please, please, fall in love with me. Surrender and let me love you my way.. -Island of fire: Radleigh Riego",
+    "No matter what, I have to have you. And you have all of me. From the very beginning. Sa'yong sa'yo lang ako. Kahit anong mangyari, sa 'yo lang ako. -Sands of time: Raoul Riego",
+    "To live a life worth living means to take risks and chances. —Tripped: Yeshua Altamirano",
+    "I'm gonna get you. From now on, you won't be touched by anyone. Except me. -Every beast needs a beauty: Rage Joseff T. Del Fierro",
+    "You decide to leave me. And I'll decide to stick with you. -Every beast needs a beauty: Rage Joseff T. Del Fierro",
+    "I'll buy your lunch or I'll cook for you. I'll fetch you every day. I'll be with you twenty four seven. I'll wear your favorite shirt all the damn time. I'm obsessed with you, Sunny. F*cking obsessed. -Every beast needs a beauty: Rage Joseff T. Del Fierro",
+    "If I need to search the depths of hell just to find you, Sunny, I will. Even if it means you'll push me again. -Every beast needs a beauty: Rage Joseff T. Del Fierro",
+    "Give me one lifetime to prove you that, I deserve your love. -Every beast needs a beauty: Rage Del Fierro",
+    "Leaving is better that being left. -Mapapansin kaya?: Wade Rivas",
+    "I wish I could find a better words, to make you stay with me. -To stay: Hendrix Ty",
+    "One day, you'll beg for my kiss. -Heartless: Rozen Elizalde",
+    "Life is too short for mediocre love. -Baka sakali: Jacob Buenaventura",
+    "Your'e the beast Sunny, A very beautiful beast. -Every beast needs a beauty: Rage Del Fierro",
+    "You are my first priority. Ikaw 'yung laman ng buhay ko. Everything else is just details. -Mapapansin kaya?: Wade Rivas",
+    "Coz if I were to choose if I'd stay with Reina or be your Wade Rivas, I'll choose to stay with her, coz I'm not Wade Rivas without her. -Mapapansin kaya?: Wade Rivas",
+    "To love is to bear all things. To believe the uncertainties. To hope for the unknown. And to endure the pain. -Ripped: Pantaleon Revamonte IV",
+    "For years, I have admired her from afar despite the anger and hatred she gave me. Masokista na talaga ata ako. And now that I finally have her for myself, oras naman ang wala para sa kanya. Kailan magkakaroon ng para sa akin? -Blown by The Wind: Vincentius Theron Hidalgo",
+    "You know this life is short. We shouldn't waste our time waiting for things to happen. -Tripped: Pantaleon Revamonte IV",
+    "I’m willing to risk everything but she’s not willing to do the same. -Until Trilogy: Elijah Riley Montefalco",
+    "When the time comes, I won't force you. You will force me. You will beg... -Ripped: Pantaleon Revamonte IV",
+    "Every nerve of my body might be mad or numb that time. But still I crave for you. -Until Trilogy: Elijah Riley Montefalco",
+    "I would keep her no matter what. Kahit na ipilit niya ang pag alis, I would beg her to stay. -One Night, One Lie: Brandon Walter Rockwell",
+    "It's a miracle that I survived. And maybe you were my lucky charm all this time. -Hold Me Close: Alvaro Santander",
+    "I'm sorry, I kept you waiting. I love you, please forgive me, baby. I love you and your mother so much. I was miserable, too. I thought I lost everything. -Sunburned Heart: Jaxon Archibald Riego",
+    "I respect your dreams and decisions. So much. I don't care if it'll destroy me. ㅡBlown by the wind: Vincentius Theron Hidalgo",
+    "Your mother is cruel to many people. She's arrogant, rude at times, and very bossy. But, Amber, I know who I married. I know her flaws, her weaknesses, and her sorrows. I memorized it all. —Sunburned Heart: Gaudencio Sevilla"
+  ];
+
+    const modal = document.getElementById('starModal');
+    const starNameElement = document.getElementById('starName');
+    const starDescriptionElement = document.getElementById('starDescription');
+    const starQuoteElement = document.getElementById('starQuote');
+    
+    function drawStar(x, y, size, brightness) {
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, 2 * Math.PI);
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${brightness})`);
+      gradient.addColorStop(1, 'transparent');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    }
+    
+    function getRandomCoordinate(max) {
+      return Math.floor(Math.random() * max);
+    }
+    
+    function getRandomQuote() {
+      return quotes[Math.floor(Math.random() * quotes.length)];
+    }
+    
+    function findClickedStar(event) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+    
+      for (const star of stars) {
+        const distance = Math.sqrt((star.x - mouseX) ** 2 + (star.y - mouseY) ** 2);
+        if (distance < star.size) {
+          displayStarInfo(star.name, star.description, star.quote);
+          break;
+        }
+      }
+    }
+    
+    function displayStarInfo(name, description, quote) {
+      starNameElement.textContent = name;
+      starDescriptionElement.textContent = description;
+      starQuoteElement.textContent = quote;
+      modal.style.display = 'block';
+    }
+    
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+    
+    function updateStarsPosition() {
+      for (const star of stars) {
+        star.x += (Math.random() - 0.5) * 0.5; // Move the star horizontally within a small range
+        star.y += (Math.random() - 0.5) * 0.5; // Move the star vertically within a small range
+    
+        // Ensure stars stay within the canvas boundaries
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
+        if (star.y < 0) star.y = canvas.height;
+        if (star.y > canvas.height) star.y = 0;
+      }
+    }
+    
+    function getStarOrdinalNumber(number) {
+  const lastDigit = number % 10;
+  const lastTwoDigits = number % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return `${number}th`;
+  } else if (lastDigit === 1) {
+    return `${number}st`;
+  } else if (lastDigit === 2) {
+    return `${number}nd`;
+  } else if (lastDigit === 3) {
+    return `${number}rd`;
+  } else {
+    return `${number}th`;
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw big stars
+  for (let i = 0; i < numBigStars; i++) {
+    const x = getRandomCoordinate(canvas.width);
+    const y = getRandomCoordinate(canvas.height);
+    const size = 10;
+    stars.push({ x, y, size, name: `Star ${i + 1}/${totalStars}`, brightness: 1, description: `In Jonaxx Universe: The ${getStarOrdinalNumber(i + 1)} Star among ${totalStars}.`, quote: getRandomQuote() });
+    drawStar(x, y, size, 1);
+  }
+
+  // Draw small stars
+  for (let i = 0; i < numSmallStars; i++) {
+    const x = getRandomCoordinate(canvas.width);
+    const y = getRandomCoordinate(canvas.height);
+    const size = Math.random() * 2 + 1; // Random size between 1 and 3
+    stars.push({ x, y, size, name: `Star ${getStarOrdinalNumber(numBigStars + i + 1)}/${totalStars}`, brightness: 1, description: `In Jonaxx Universe: The ${getStarOrdinalNumber(numBigStars + i + 1)} Star among ${totalStars}.`, quote: getRandomQuote() });
+    drawStar(x, y, size, 1);
+  }
+}
+    
+    function animate() {
+      updateStarsPosition();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const star of stars) {
+        drawStar(star.x, star.y, star.size, star.brightness);
+      }
+      requestAnimationFrame(animate);
+    }
+    
+    drawStars();
+    canvas.addEventListener('click', findClickedStar);
+    animate();
+    </script>
+</body>
+</html>
